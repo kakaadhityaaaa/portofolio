@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kakung Adhityatalenta – Portofolio Interaktif</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+<style>
+:root{--bg:#e9ecf8;--sky:#cfd8ff;--floor:#b9a47e;--panel:#fffdf6;--ink:#1d2140;--muted:#5a6085;--accent:#3a54d8;--line:#1d2140;--chip:#eef0fb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c0f1f;--sky:#1a2250;--floor:#4a3f2e;--panel:#171b36;--ink:#eef0ff;--muted:#a3a9d0;--accent:#7f95ff;--line:#eef0ff;--chip:#232850}}
+:root[data-theme="dark"]{--bg:#0c0f1f;--sky:#1a2250;--floor:#4a3f2e;--panel:#171b36;--ink:#eef0ff;--muted:#a3a9d0;--accent:#7f95ff;--line:#eef0ff;--chip:#232850}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Press Start 2P",ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.8;display:flex;flex-direction:column;max-width:860px;margin:0 auto}
+.hud{display:flex;justify-content:space-between;gap:8px;padding:12px 16px;font-size:10px;color:var(--muted)}
+.scene{flex:1;min-height:200px;margin:0 16px;border:4px solid var(--line);background:linear-gradient(var(--sky) 0 68%,var(--floor) 68%);position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.prop{position:absolute;font-size:30px;bottom:34%;filter:saturate(.9)}
+.p1{left:8%}.p2{right:9%}.p3{left:24%;bottom:70%;font-size:24px}.p4{right:26%;bottom:70%;font-size:24px}
+.npc{width:128px;margin-bottom:6%;background:#b3122a;border:4px solid var(--line);padding:6px 6px 0;animation:bob 2s steps(2) infinite;position:relative}
+.npc svg{display:block;width:100%;height:auto;shape-rendering:crispEdges}
+.tag{position:absolute;top:-30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:9px;padding:3px 8px;white-space:nowrap}
+@keyframes bob{50%{transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){.npc{animation:none}}
+.dlg{margin:14px 16px 16px;background:var(--panel);border:4px solid var(--line);padding:16px;min-height:200px;box-shadow:6px 6px 0 var(--line)}
+.who{display:inline-block;background:var(--accent);color:#fff;font-size:10px;padding:2px 8px;margin-bottom:10px}
+#txt{min-height:86px;font-size:11px;line-height:2;cursor:pointer;white-space:pre-wrap}
+.more{float:right;color:var(--accent);animation:blink 1s steps(2) infinite;font-size:10px}
+@keyframes blink{50%{opacity:0}}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:12px}
+button,.lnk{font:inherit;font-size:10px;line-height:1.6;text-align:left;background:var(--chip);color:var(--ink);border:3px solid var(--line);padding:10px 12px;cursor:pointer;text-decoration:none;display:block}
+button:hover,button:focus-visible,.lnk:hover{background:var(--accent);color:#fff;outline:none}
+button.done{opacity:.6}
+button.done::after{content:" ✓"}
+.start{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px;z-index:9;padding-top:calc(24px + env(safe-area-inset-top,0px))}
+.card{max-width:460px;width:100%;background:var(--panel);border:4px solid var(--line);padding:24px;box-shadow:6px 6px 0 var(--line)}
+.card h1{font-size:15px;line-height:1.7;margin:0 0 14px}
+.card p{font-size:10px;color:var(--muted);margin:0 0 16px}
+input{font:inherit;font-size:11px;width:100%;padding:12px;border:3px solid var(--line);background:var(--chip);color:var(--ink);margin-bottom:12px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<div class="start" id="start">
+  <div class="card">
+    <h1>🎮 Portofolio Kakung</h1>
+    <p>Kamu memasuki ruang kerja Kakung. Ada seorang mahasiswa duduk di sana. Mari kenalan!</p>
+    <input id="nm" placeholder="Siapa namamu?" maxlength="20" autocomplete="off">
+    <button id="go">▶ MULAI PETUALANGAN</button>
+  </div>
+</div>
+
+<div class="hud"><span>📍 Ruang Kerja Kakung</span><span id="q">Percakapan 0/6</span></div>
+
+<div class="scene" aria-label="Karakter Kakung">
+  <span class="prop p1">💻</span><span class="prop p2">📚</span><span class="prop p3">🎨</span><span class="prop p4">🎬</span>
+  <div class="npc">
+    <span class="tag">KAKUNG • NPC</span>
+    <svg viewBox="0 0 16 22" aria-hidden="true">
+      <rect x="4" y="1" width="8" height="3" fill="#1b1b1f"/><rect x="3" y="3" width="1" height="3" fill="#1b1b1f"/><rect x="12" y="3" width="1" height="3" fill="#1b1b1f"/>
+      <rect x="4" y="4" width="8" height="7" fill="#e0a77a"/>
+      <rect x="6" y="7" width="1" height="1" fill="#1b1b1f"/><rect x="9" y="7" width="1" height="1" fill="#1b1b1f"/>
+      <rect x="7" y="9" width="2" height="1" fill="#a8543a"/>
+      <rect x="7" y="11" width="2" height="1" fill="#e0a77a"/>
+      <rect x="2" y="12" width="12" height="10" fill="#f4f4f4"/><rect x="2" y="12" width="1" height="10" fill="#d6d6d6"/><rect x="13" y="12" width="1" height="10" fill="#d6d6d6"/><rect x="7" y="12" width="2" height="2" fill="#e0a77a"/>
+    </svg>
+  </div>
+</div>
+
+<div class="dlg">
+  <span class="who">KAKUNG</span><span class="more hidden" id="more">▼</span>
+  <div id="txt" role="status" aria-live="polite" tabindex="0"></div>
+  <div class="choices" id="ch"></div>
+</div>
+
+<script>
+var topics=[
+ {id:"siapa",label:"👋 Kamu siapa sih?",lines:[
+  "Aku Kakung Adhityatalenta, asli Lamongan, Jawa Timur. Sekarang aku mahasiswa baru S1 Pendidikan Teknologi Informasi di Universitas Negeri Surabaya.",
+  "Teman-teman bilang aku disiplin, bertanggung jawab, dan gampang bergaul. Aku juga suka belajar hal baru, {nama}!"]},
+ {id:"minat",label:"⭐ Apa minatmu?",lines:[
+  "Minatku ada lima. Satu: teknologi informasi dan komputer. Dua: pendidikan dan pembelajaran digital. Tiga: desain presentasi dan konten kreatif.",
+  "Empat: mengembangkan keterampilan dan pengetahuan baru. Lima: kegiatan sosial dan kerja sama tim. Kalau ada proyek kelompok, aku senang ikut!"]},
+ {id:"pendidikan",label:"🎓 Cerita pendidikanmu",lines:[
+  "Perjalananku dimulai di SMPN 1 Lamongan (2021–2023). Di sana aku belajar berpikir kritis dan beradaptasi.",
+  "Lalu SMAN 2 Lamongan (2023–2026), jurusan sains: Matematika, Biologi, Kimia, dan Fisika. Itu melatih logika dan tanggung jawabku.",
+  "Sejak Agustus 2026 aku kuliah di UNESA. Aku belajar dasar teknologi informasi, pemrograman, sistem informasi, dan cara memakai teknologi untuk pendidikan."]},
+ {id:"skill",label:"🛠️ Skill dan tools-mu?",lines:[
+  "Tools andalanku: Canva untuk desain, Capcut untuk edit video, plus Microsoft Word dan Excel.",
+  "Soft skill-ku: problem solving, kerja sama tim, dan komunikasi. Sisanya masih aku upgrade terus selama kuliah."]},
+ {id:"sertifikat",label:"🏅 Ada sertifikat?",lines:[
+  "Ada! Gemini Certified Student dari Google for Education (2026). Itu sertifikat pertamaku, dan semoga bukan yang terakhir.",
+  "Aku tertarik memakai AI untuk membantu proses belajar, bukan menggantikannya."]},
+ {id:"kontak",label:"📬 Cara menghubungimu?",lines:[
+  "Boleh banget, {nama}! Kalau mau ngobrol soal proyek, belajar bareng, atau peluang magang, kontak aku lewat sini."],
+  links:[["✉️ Email","mailto:Kakungadhityatalentaa@gmail.com"],["💬 WhatsApp","https://wa.me/6282322558861"]]}
+];
+var nama="",done={},queue=[],cur=null,typing=false,timer=null,full="";
+var $=function(i){return document.getElementById(i)};
+function fill(s){return s.replace(/\{nama\}/g,nama)}
+
+function type(s){
+  full=s;typing=true;$("more").classList.add("hidden");$("txt").textContent="";
+  var i=0;clearInterval(timer);
+  timer=setInterval(function(){i++;$("txt").textContent=full.slice(0,i);if(i>=full.length)finish()},22);
+}
+function finish(){
+  clearInterval(timer);typing=false;$("txt").textContent=full;
+  if(queue.length)$("more").classList.remove("hidden");else menu();
+}
+function advance(){
+  if(typing){finish();return}
+  if(queue.length){$("ch").innerHTML="";type(fill(queue.shift()))}
+}
+function say(lines){queue=lines.slice();$("ch").innerHTML="";type(fill(queue.shift()))}
+
+function count(){return Object.keys(done).length}
+function menu(){
+  $("q").textContent="Percakapan "+count()+"/"+topics.length;
+  var c=$("ch");c.innerHTML="";
+  if(count()===topics.length){
+    $("q").textContent="Quest selesai 🏆";
+    var kl=topics[5].links;
+    kl.forEach(function(l){var a=document.createElement("a");a.className="lnk";a.textContent=l[0];a.href=l[1];a.target="_blank";a.rel="noopener";c.appendChild(a)});
+    var r=document.createElement("button");r.textContent="🔄 Lihat portofolio lagi";r.onclick=restart;c.appendChild(r);
+    return;
+  }
+  topics.forEach(function(t){
+    var b=document.createElement("button");b.textContent=t.label;
+    if(done[t.id])b.className="done";
+    b.onclick=function(){talk(t)};c.appendChild(b);
+  });
+  if(cur&&cur.links)cur.links.forEach(function(l){
+    var a=document.createElement("a");a.className="lnk";a.textContent=l[0];a.href=l[1];a.target="_blank";a.rel="noopener";c.insertBefore(a,c.firstChild);
+  });
+}
+function talk(t){
+  done[t.id]=1;cur=t;
+  var l=t.lines.slice();
+  if(count()===topics.length)l.push("Quest selesai! Kamu sudah kenal aku, {nama}. Terima kasih sudah mampir ke portofolioku. Semoga kita bisa kerja bareng suatu hari nanti! 🎉");
+  say(l);
+}
+function restart(){
+  done={};cur=null;
+  say(["Oke {nama}, kita mulai lagi ya! Mau tanya apa dulu?"]);
+}
+
+$("txt").onclick=advance;
+document.addEventListener("keydown",function(e){if((e.key==="Enter"||e.key===" ")&&document.activeElement===$("txt")){e.preventDefault();advance()}});
+$("more").onclick=advance;
+
+function begin(){
+  nama=$("nm").value.trim()||"Petualang";
+  $("start").classList.add("hidden");
+  say(["Halo, {nama}! Selamat datang di ruang kerjaku. Aku Kakung.","Ini portofolioku, tapi daripada baca daftar panjang, kita ngobrol aja yuk. Mau tanya apa dulu?"]);
+}
+$("go").onclick=begin;
+$("nm").addEventListener("keydown",function(e){if(e.key==="Enter")begin()});
+</script>
+</body>
+</html>
