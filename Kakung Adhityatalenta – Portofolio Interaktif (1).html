@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kakung Adhityatalenta – Portofolio Interaktif</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+<style>
+:root{--bg:#e9ecf8;--sky:#cfd8ff;--floor:#b9a47e;--panel:#fffdf6;--ink:#1d2140;--muted:#5a6085;--accent:#3a54d8;--line:#1d2140;--chip:#eef0fb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0c0f1f;--sky:#1a2250;--floor:#4a3f2e;--panel:#171b36;--ink:#eef0ff;--muted:#a3a9d0;--accent:#7f95ff;--line:#eef0ff;--chip:#232850}}
+:root[data-theme="dark"]{--bg:#0c0f1f;--sky:#1a2250;--floor:#4a3f2e;--panel:#171b36;--ink:#eef0ff;--muted:#a3a9d0;--accent:#7f95ff;--line:#eef0ff;--chip:#232850}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Press Start 2P",ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.8;display:flex;flex-direction:column;max-width:860px;margin:0 auto}
+.hud{display:flex;justify-content:space-between;gap:8px;padding:12px 16px;font-size:10px;color:var(--muted)}
+.scene{flex:1;min-height:200px;margin:0 16px;border:4px solid var(--line);background:linear-gradient(var(--sky) 0 68%,var(--floor) 68%);position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.prop{position:absolute;font-size:30px;bottom:34%;filter:saturate(.9)}
+.p1{left:8%}.p2{right:9%}.p3{left:24%;bottom:70%;font-size:24px}.p4{right:26%;bottom:70%;font-size:24px}
+.npc{width:128px;margin-bottom:6%;background:#b3122a;border:4px solid var(--line);padding:6px 6px 0;animation:bob 2s steps(2) infinite;position:relative}
+.npc svg{display:block;width:100%;height:auto;shape-rendering:crispEdges}
+.tag{position:absolute;top:-30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;font-size:9px;padding:3px 8px;white-space:nowrap}
+@keyframes bob{50%{transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){.npc{animation:none}}
+.dlg{margin:14px 16px 16px;background:var(--panel);border:4px solid var(--line);padding:16px;min-height:200px;box-shadow:6px 6px 0 var(--line)}
+.who{display:inline-block;background:var(--accent);color:#fff;font-size:10px;padding:2px 8px;margin-bottom:10px}
+#txt{min-height:86px;font-size:11px;line-height:2;cursor:pointer;white-space:pre-wrap}
+.more{float:right;color:var(--accent);animation:blink 1s steps(2) infinite;font-size:10px}
+@keyframes blink{50%{opacity:0}}
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:12px}
+button,.lnk{font:inherit;font-size:10px;line-height:1.6;text-align:left;background:var(--chip);color:var(--ink);border:3px solid var(--line);padding:10px 12px;cursor:pointer;text-decoration:none;display:block}
+button:hover,button:focus-visible,.lnk:hover{background:var(--accent);color:#fff;outline:none}
+button.done{opacity:.6}
+button.done::after{content:" ✓"}
+.start{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px;z-index:9;padding-top:calc(24px + env(safe-area-inset-top,0px))}
+.card{max-width:460px;width:100%;background:var(--panel);border:4px solid var(--line);padding:24px;box-shadow:6px 6px 0 var(--line)}
+.card h1{font-size:15px;line-height:1.7;margin:0 0 14px}
+.card p{font-size:10px;color:var(--muted);margin:0 0 16px}
+input{font:inherit;font-size:11px;width:100%;padding:12px;border:3px solid var(--line);background:var(--chip);color:var(--ink);margin-bottom:12px}
+.hidden{display:none}
+.bub{position:absolute;top:12px;left:50%;transform:translateX(-50%);max-width:88%;background:var(--panel);border:3px solid var(--line);padding:8px 10px;font-size:9px;line-height:1.7;z-index:3;text-align:center}
+.prop,.npc{cursor:pointer}
+button.lock::before{content:"🔒 "}
+.game{position:fixed;inset:0;background:rgba(5,8,25,.88);z-index:20;display:flex;align-items:center;justify-content:center;padding:12px}
+.game.hidden{display:none}
+.gbox{background:var(--panel);border:4px solid var(--line);padding:12px;max-width:380px;width:100%}
+.gtop{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:10px;margin-bottom:8px}
+#cv{display:block;margin:0 auto;width:min(100%,calc(62vh * .8));height:auto;border:3px solid var(--line);touch-action:none;background:#1a2250}
+#gh{font-size:9px;color:var(--muted);margin:8px 0 0;line-height:1.7}
+</style>
+</head>
+<body>
+
+<div class="start" id="start">
+  <div class="card">
+    <h1>🎮 Portofolio Kakung</h1>
+    <p>Kamu memasuki ruang kerja Kakung. Ada seorang mahasiswa duduk di sana. Mari kenalan!</p>
+    <input id="nm" placeholder="Siapa namamu?" maxlength="20" autocomplete="off">
+    <button id="go">▶ MULAI PETUALANGAN</button>
+  </div>
+</div>
+
+<div class="hud"><span>📍 Ruang Kerja Kakung</span><span id="q">🔑 Rahasia 0/5</span></div>
+
+<div class="scene" aria-label="Karakter Kakung">
+  <div class="bub hidden" id="bub"></div>
+  <span class="prop p1">💻</span><span class="prop p2">📚</span><span class="prop p3">🎨</span><span class="prop p4">🎬</span>
+  <div class="npc">
+    <span class="tag">KAKUNG • NPC</span>
+    <svg viewBox="0 0 16 22" aria-hidden="true">
+      <rect x="4" y="1" width="8" height="3" fill="#1b1b1f"/><rect x="3" y="3" width="1" height="3" fill="#1b1b1f"/><rect x="12" y="3" width="1" height="3" fill="#1b1b1f"/>
+      <rect x="4" y="4" width="8" height="7" fill="#e0a77a"/>
+      <rect x="6" y="7" width="1" height="1" fill="#1b1b1f"/><rect x="9" y="7" width="1" height="1" fill="#1b1b1f"/>
+      <rect x="7" y="9" width="2" height="1" fill="#a8543a"/>
+      <rect x="7" y="11" width="2" height="1" fill="#e0a77a"/>
+      <rect x="2" y="12" width="12" height="10" fill="#f4f4f4"/><rect x="2" y="12" width="1" height="10" fill="#d6d6d6"/><rect x="13" y="12" width="1" height="10" fill="#d6d6d6"/><rect x="7" y="12" width="2" height="2" fill="#e0a77a"/>
+    </svg>
+  </div>
+</div>
+
+<div class="dlg">
+  <span class="who">KAKUNG</span><span class="more hidden" id="more">▼</span>
+  <div id="txt" role="status" aria-live="polite" tabindex="0"></div>
+  <div class="choices" id="ch"></div>
+</div>
+
+<script>
+var topics=[
+ {id:"siapa",label:"👋 Kamu siapa sih?",lines:[
+  "Aku Kakung Adhityatalenta, asli Lamongan, Jawa Timur. Sekarang aku mahasiswa baru S1 Pendidikan Teknologi Informasi di Universitas Negeri Surabaya.",
+  "Teman-teman bilang aku disiplin, bertanggung jawab, dan gampang bergaul. Aku juga suka belajar hal baru, {nama}!"]},
+ {id:"minat",label:"⭐ Apa minatmu?",lines:[
+  "Minatku ada lima. Satu: teknologi informasi dan komputer. Dua: pendidikan dan pembelajaran digital. Tiga: desain presentasi dan konten kreatif.",
+  "Empat: mengembangkan keterampilan dan pengetahuan baru. Lima: kegiatan sosial dan kerja sama tim. Kalau ada proyek kelompok, aku senang ikut!"]},
+ {id:"pendidikan",label:"🎓 Cerita pendidikanmu",lines:[
+  "Perjalananku dimulai di SMPN 1 Lamongan (2021–2023). Di sana aku belajar berpikir kritis dan beradaptasi.",
+  "Lalu SMAN 2 Lamongan (2023–2026), jurusan sains: Matematika, Biologi, Kimia, dan Fisika. Itu melatih logika dan tanggung jawabku.",
+  "Sejak Agustus 2026 aku kuliah di UNESA. Aku belajar dasar teknologi informasi, pemrograman, sistem informasi, dan cara memakai teknologi untuk pendidikan."]},
+ {id:"skill",label:"🛠️ Skill dan tools-mu?",lines:[
+  "Tools andalanku: Canva untuk desain, Capcut untuk edit video, plus Microsoft Word dan Excel.",
+  "Soft skill-ku: problem solving, kerja sama tim, dan komunikasi. Sisanya masih aku upgrade terus selama kuliah."]},
+ {id:"sertifikat",label:"🏅 Ada sertifikat?",lines:[
+  "Ada! Gemini Certified Student dari Google for Education (2026). Itu sertifikat pertamaku, dan semoga bukan yang terakhir.",
+  "Aku tertarik memakai AI untuk membantu proses belajar, bukan menggantikannya."]}
+];
+var kontak="Ini kontakku, {nama}:\n✉️ Email: Kakungadhityatalentaa@gmail.com\n💬 WhatsApp: 082322558861";
+var nama="",done={},queue=[],cur=null,typing=false,timer=null,full="";
+var $=function(i){return document.getElementById(i)};
+function fill(s){return s.replace(/\{nama\}/g,nama)}
+
+function type(s){
+  full=s;typing=true;$("more").classList.add("hidden");$("txt").textContent="";
+  var i=0;clearInterval(timer);
+  timer=setInterval(function(){i++;$("txt").textContent=full.slice(0,i);if(i>=full.length)finish()},22);
+}
+function finish(){
+  clearInterval(timer);typing=false;$("txt").textContent=full;
+  if(queue.length)$("more").classList.remove("hidden");else{var f=after;after=null;if(f)f();else menu()}
+}
+function advance(){
+  if(typing){finish();return}
+  if(queue.length){$("ch").innerHTML="";type(fill(queue.shift()))}
+}
+function say(lines){queue=lines.slice();$("ch").innerHTML="";type(fill(queue.shift()))}
+
+function count(){return Object.keys(done).length}
+function menu(){
+  $("q").textContent="🔑 Rahasia "+count()+"/"+topics.length;
+  var c=$("ch");c.innerHTML="";
+  if(count()===topics.length){
+    $("q").textContent="Quest selesai 🏆";
+    var k=document.createElement("button");k.textContent="📬 Lihat kontak";k.onclick=function(){say([kontak])};c.appendChild(k);
+    var r=document.createElement("button");r.textContent="🔄 Lihat portofolio lagi";r.onclick=restart;c.appendChild(r);
+    return;
+  }
+  topics.forEach(function(t){
+    var b=document.createElement("button");b.textContent=t.label;b.onmouseenter=b.onfocus=function(){shout(TEASE[t.id])};
+    b.className=done[t.id]?"done":"lock";
+    b.onclick=function(){talk(t)};c.appendChild(b);
+  });
+  if(cur&&cur.links)cur.links.forEach(function(l){
+    var a=document.createElement("a");a.className="lnk";a.textContent=l[0];a.href=l[1];a.target="_blank";a.rel="noopener";c.insertBefore(a,c.firstChild);
+  });
+}
+function talk(t){
+  var go=function(){play(GAMES[t.id],function(){talk2(t)})};
+  var back=function(){say(['Oke, santai aja {nama}. Pilih pertanyaan lain dulu juga boleh!'])};
+  var nego=function(){ask(['Nawar? Hmm... boleh sih, tapi targetnya tetap sama, hehe 😆 Yang bisa aku kasih diskon cuma semangat, gratis!'],[['🎮 Yaudah, aku main',go],['🙈 Nanti dulu',back]])};
+  var price=function(){ask([PRICE(t.id)],[['🎮 Deal! Aku main',go],['💸 Boleh nawar?',nego],['🙈 Nanti dulu',back]])};
+  ask([BANTER[t.id]],[['🎮 Gas, aku main!',go],['🤔 Memang harganya apa?',price],['🙈 Nanti dulu',back]]);
+}
+function talk2(t){
+  done[t.id]=1;cur=t;
+  var l=t.lines.slice();l.unshift(["Mantap, {nama}! Kamu berhasil buka rahasia ini! 🔓","Keren! Skill gamingmu boleh juga, {nama}! 🎉","Yes! Kunci terbuka. Ini yang kamu cari 👇"][Math.floor(Math.random()*3)]);
+  if(count()===topics.length)l.push("Quest selesai! Kamu sudah kenal aku, {nama}. Terima kasih sudah mampir ke portofolioku. Semoga kita bisa kerja bareng suatu hari nanti! Kalau mau ngobrol lebih lanjut, hubungi aku lewat tombol di bawah. 🎉");
+  say(l);
+}
+function restart(){
+  done={};cur=null;
+  say(["Oke {nama}, kita mulai lagi ya! Mau tanya apa dulu?"]);
+}
+
+$("txt").onclick=advance;
+document.addEventListener("keydown",function(e){if((e.key==="Enter"||e.key===" ")&&document.activeElement===$("txt")){e.preventDefault();advance()}});
+$("more").onclick=advance;
+
+function begin(){
+  nama=$("nm").value.trim()||"Petualang";
+  $("start").classList.add("hidden");
+  say(["Halo, {nama}! Selamat datang di ruang kerjaku. Aku Kakung.","Ini portofolioku, tapi daripada baca daftar panjang, kita ngobrol aja yuk. Tapi ada syaratnya: menangkan dulu minigame di tiap pertanyaan! 🎮"]);
+}
+$("go").onclick=begin;
+$("nm").addEventListener("keydown",function(e){if(e.key==="Enter")begin()});
+</script>
+<div class="game hidden" id="gm"><div class="gbox"><div class="gtop"><span id="gt"></span><button id="gx">✕ KELUAR</button></div><canvas id="cv" width="320" height="400"></canvas><p id="gh"></p></div></div>
+<script>
+var G,raf,last,over,won,sc,cb,cvs,cx,K={};
+var R=function(x,y,w,h,c){cx.fillStyle=c;cx.fillRect(x,y,w,h)};
+var B=function(c){R(0,0,320,400,c)};
+var T=function(s,x,y,z,c){cx.font=z+"px 'Press Start 2P',monospace";cx.fillStyle=c||'#fff';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(s,x,y)};
+function add(){if(won)return;sc++;if(sc>=G.goal)win()}
+function lose(){over=true}
+function win(){won=true;setTimeout(function(){quit(true)},1000)}
+function steer(s,d){if(K.ArrowLeft)s.x-=5*d;if(K.ArrowRight)s.x+=5*d;s.x=Math.max(20,Math.min(300,s.x))}
+var FL={name:'Flappy Pixel',goal:10,hint:'Tap atau Spasi untuk terbang. Lewati 10 pipa!',
+init:function(){this.y=200;this.v=0;this.p=[];this.t=45},
+tap:function(){this.v=-6},
+upd:function(d){var s=this;s.v+=.35*d;s.y+=s.v*d;s.t+=d;if(s.t>85){s.t=0;s.p.push({x:330,g:70+Math.random()*180,ok:0})}
+s.p.forEach(function(p){p.x-=2.2*d;if(!p.ok&&p.x+40<48){p.ok=1;add()}if(72>p.x&&48<p.x+40&&(s.y-12<p.g||s.y+12>p.g+115))lose()});if(s.y>388||s.y<12)lose()},
+draw:function(){var s=this;B('#5ec2f0');s.p.forEach(function(p){R(p.x,0,40,p.g,'#3cb043');R(p.x,p.g+115,40,400,'#3cb043')});R(0,392,320,8,'#8b5a2b');R(48,s.y-12,24,24,'#ffd23f');R(64,s.y-6,4,4,'#000')}};
+var DA={name:'Dash Kotak',goal:10,hint:'Tap atau Spasi untuk melompat. Lewati 10 duri!',
+init:function(){this.y=330;this.v=0;this.o=[];this.t=50},
+tap:function(){if(this.y>=330)this.v=-11},
+upd:function(d){var s=this;s.v+=.65*d;s.y+=s.v*d;if(s.y>330){s.y=330;s.v=0}s.t-=d;if(s.t<=0){s.t=65+Math.random()*50;s.o.push({x:330,ok:0})}
+s.o.forEach(function(o){o.x-=4.5*d;if(!o.ok&&o.x+22<50){o.ok=1;add()}if(o.x<70&&o.x+22>54&&s.y>316)lose()})},
+draw:function(){var s=this;B('#2b1b5e');R(0,354,320,46,'#5a3fc0');s.o.forEach(function(o){cx.fillStyle='#ff4d6d';cx.beginPath();cx.moveTo(o.x,354);cx.lineTo(o.x+11,330);cx.lineTo(o.x+22,354);cx.fill()});R(50,s.y,24,24,'#ffd23f');R(54,s.y+6,5,5,'#000');R(65,s.y+6,5,5,'#000')}};
+var ME={name:'Hindari Meteor',goal:10,hint:'Geser jari/mouse atau tombol panah. Hindari 10 meteor!',
+init:function(){this.x=160;this.m=[];this.t=20},
+mv:function(x){this.x=Math.max(20,Math.min(300,x))},
+upd:function(d){var s=this;steer(s,d);s.t-=d;if(s.t<=0){s.t=38;s.m.push({x:15+Math.random()*290,y:-20,r:10+Math.random()*8,v:2.5+Math.random()*2.2,ok:0})}
+s.m.forEach(function(m){m.y+=m.v*d;if(!m.ok&&m.y>400){m.ok=1;add()}if(Math.hypot(m.x-s.x,m.y-358)<m.r+10)lose()});s.m=s.m.filter(function(m){return m.y<430})},
+draw:function(){var s=this;B('#0a0c24');s.m.forEach(function(m){cx.fillStyle='#9a7b57';cx.beginPath();cx.arc(m.x,m.y,m.r,0,7);cx.fill()});cx.fillStyle='#7f95ff';cx.beginPath();cx.moveTo(s.x,340);cx.lineTo(s.x-14,372);cx.lineTo(s.x+14,372);cx.fill()}};
+var SN={name:'Cacing Jadul',goal:10,hint:'Geser jari atau tombol panah. Makan 10 apel 🍎, jangan tabrak dinding atau tubuhmu!',
+init:function(){this.b=[{x:8,y:10},{x:7,y:10},{x:6,y:10}];this.d={x:1,y:0};this.nd=this.d;this.t=0;this.sx=null;this.a=this.ap()},
+ap:function(){var s=this,p;do{p={x:Math.floor(Math.random()*16),y:Math.floor(Math.random()*20)}}while(s.b.some(function(q){return q.x===p.x&&q.y===p.y}));return p},
+dir:function(x,y){if(x!==-this.d.x||y!==-this.d.y)this.nd={x:x,y:y}},
+tap:function(x,y){if(!x&&!y)return;this.sx=x;this.sy=y},
+mv:function(x,y){var s=this;if(s.sx==null||y===undefined)return;var dx=x-s.sx,dy=y-s.sy;if(Math.max(Math.abs(dx),Math.abs(dy))<18)return;if(Math.abs(dx)>Math.abs(dy))s.dir(dx>0?1:-1,0);else s.dir(0,dy>0?1:-1);s.sx=null},
+upd:function(d){var s=this;if(K.ArrowLeft)s.dir(-1,0);if(K.ArrowRight)s.dir(1,0);if(K.ArrowUp)s.dir(0,-1);if(K.ArrowDown)s.dir(0,1);
+s.t+=d;if(s.t<8)return;s.t=0;s.d=s.nd;var h={x:s.b[0].x+s.d.x,y:s.b[0].y+s.d.y};
+if(h.x<0||h.x>15||h.y<0||h.y>19||s.b.some(function(q){return q.x===h.x&&q.y===h.y})){lose();return}
+s.b.unshift(h);if(h.x===s.a.x&&h.y===s.a.y){add();if(!won)s.a=s.ap()}else s.b.pop()},
+draw:function(){var s=this;B('#183a2b');s.b.forEach(function(q,i){R(q.x*20+1,q.y*20+1,18,18,i?'#7dff9b':'#e6ffe9')});T('🍎',s.a.x*20+10,s.a.y*20+11,16)}};
+var MM={name:'Kartu Memori',goal:10,hint:'Tap kartu untuk membuka. Cocokkan 10 pasang!',
+init:function(){var e=['💻','📚','🎨','🎬','🎓','🤝','🚀','💡','🎮','🎧'];this.c=e.concat(e).sort(function(){return Math.random()-.5}).map(function(v){return{v:v,o:0,m:0}});this.op=[];this.lk=0},
+tap:function(x,y){var s=this;if(s.lk>0)return;var a=Math.floor((x-17)/74),b=Math.floor((y-30)/74);if(x<17||y<30||a<0||a>3||b<0||b>4||(x-17)%74>64||(y-30)%74>64)return;
+var k=s.c[b*4+a];if(k.o||k.m)return;k.o=1;s.op.push(k);if(s.op.length==2){if(s.op[0].v==s.op[1].v){s.op[0].m=s.op[1].m=1;s.op=[];add()}else s.lk=35}},
+upd:function(d){var s=this;if(s.lk>0){s.lk-=d;if(s.lk<=0){s.op.forEach(function(k){k.o=0});s.op=[]}}},
+draw:function(){B('#0d0f2a');this.c.forEach(function(k,i){var x=17+(i%4)*74,y=30+Math.floor(i/4)*74,sh=k.o||k.m;R(x,y,64,64,k.m?'#2f9e5b':k.o?'#eef0fb':'#3a54d8');T(sh?k.v:'?',x+32,y+34,sh?26:18,sh?'#000':'#fff')})}};
+var GAMES={siapa:FL,minat:DA,pendidikan:ME,skill:SN,sertifikat:MM};
+function loop(t){var d=Math.min((t-last)/16.67,2);last=t;if(!over&&!won)G.upd(d);G.draw();T(sc+'/'+G.goal,160,16,11);
+if(over){R(0,0,320,400,'rgba(0,0,0,.6)');T('GAGAL',160,170,18,'#ff6b6b');T('tap untuk ulang',160,210,9)}
+if(won){R(0,0,320,400,'rgba(0,0,0,.6)');T('BERHASIL!',160,190,16,'#7dff9b')}
+raf=requestAnimationFrame(loop)}
+function play(g,f){G=g;cb=f;cvs=document.getElementById('cv');cx=cvs.getContext('2d');document.getElementById('gm').classList.remove('hidden');document.getElementById('gt').textContent=g.name;document.getElementById('gh').textContent=g.hint;gstart()}
+function gstart(){over=false;won=false;sc=0;G.init();last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+function quit(ok){var m=document.getElementById('gm');if(m.classList.contains('hidden'))return;cancelAnimationFrame(raf);m.classList.add('hidden');if(ok)cb()}
+function px(e){var r=cvs.getBoundingClientRect();return[(e.clientX-r.left)*320/r.width,(e.clientY-r.top)*400/r.height]}
+var c0=document.getElementById('cv');
+c0.addEventListener('pointerdown',function(e){if(over){gstart();return}if(won)return;var p=px(e);if(G.mv)G.mv(p[0]);if(G.tap)G.tap(p[0],p[1])});
+c0.addEventListener('pointermove',function(e){if(!over&&!won&&G.mv)G.mv(px(e)[0],px(e)[1])});
+document.addEventListener('keydown',function(e){if(document.getElementById('gm').classList.contains('hidden'))return;K[e.key]=1;if(e.key===' '||e.key==='ArrowUp'){e.preventDefault();if(over){gstart();return}if(!won&&G.tap)G.tap(0,0)}if(e.key.indexOf('Arrow')===0)e.preventDefault()});
+document.addEventListener('keyup',function(e){K[e.key]=0});
+document.getElementById('gx').onclick=function(){quit(false)};
+var bt,QUIPS={npc:['Hehe, geli tau!','Jangan cuma colek, mainkan gamenya dong 😄','Aku NPC paling ramah sejagat!','Psst, ada rahasia di balik tiap game 🔒'],p1:'Di laptop ini aku belajar banyak hal... mau tahu? 💻',p2:'Buku-bukuku rahasia semua. Menangkan game dulu! 📚',p3:'Desain buatanku keren lho. Cari tahu yuk 🎨',p4:'Edit video? Ada ceritanya sendiri 🎬'},
+TEASE={siapa:'Siapa sebenarnya Kakung? 👀',minat:'Ssst... minatnya bikin penasaran lho!',pendidikan:'Perjalanannya dari SMP sampai kampus negeri...',skill:'Tools apa saja yang dia kuasai? Hmm...',sertifikat:'Ada sertifikat spesial. Mau tahu?'},
+IDLE=['Psst {n}, penasaran? Pilih satu pertanyaan! 🔒','Menangkan game, buka rahasiaku 🎮','Ayo coba, tidak sesulit kelihatannya!','Masih ada rahasia yang terkunci nih 🔑'];
+function shout(s){var b=document.getElementById('bub');b.textContent=s.replace('{n}',nama);b.classList.remove('hidden');clearTimeout(bt);bt=setTimeout(function(){b.classList.add('hidden')},3500)}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+document.querySelector('.npc').onclick=function(){shout(pick(QUIPS.npc))};
+['p1','p2','p3','p4'].forEach(function(k){document.querySelector('.'+k).onclick=function(){shout(QUIPS[k])}});
+setInterval(function(){if(document.getElementById('gm').classList.contains('hidden')&&document.getElementById('start').classList.contains('hidden')&&count()<topics.length)shout(pick(IDLE))},12000);
+var after=null;
+var BANTER={siapa:'Wah, kamu mau tahu siapa aku sebenarnya? Hmm... informasi ini tidak gratis lho! 😏',minat:'Minatku? Itu informasi premium, {nama}. Mau dapat gratis? Ada syaratnya 😎',pendidikan:'Cerita pendidikanku panjang dan seru. Tapi ada harganya, siap bayar?',skill:'Skill dan tools-ku? Itu aset berharga, harus ditebus dulu ya 💎',sertifikat:'Sertifikat itu kebanggaanku. Kamu yakin sanggup bayar harganya? 🏅'};
+function PRICE(id){var g=GAMES[id];return 'Harganya murah kok: menangkan minigame '+g.name+'. '+g.hint+' Kalau gagal, boleh coba lagi, gratis! 😄'}
+function ask(lines,opts){say(lines);after=function(){var c=document.getElementById('ch');c.innerHTML='';opts.forEach(function(o){var b=document.createElement('button');b.textContent=o[0];b.onclick=o[1];c.appendChild(b)})}}
+</script>
+</body>
+</html>
